@@ -1,18 +1,20 @@
 public class Regle {
 	//attributs
-	Proposition premisse;
-	Proposition resultat;
+	private String premisse;
+	private String resultat;
 	
-	Regle(Proposition p, Proposition r){
-		premisse = p;
-		resultat = r;
+	Regle(String proposition){	
+		//délimite la prémisse et le résultat sur la flèche
+		int delim = proposition.indexOf("-");
+		premisse = proposition.substring(0, delim);
+		resultat = proposition.substring(delim+2, proposition.length());
 	}
 	
-	private Proposition getPrem(){
+	public String getPrem(){
 		return premisse;
 	}
 	
-	private Proposition getRes(){
+	public String getRes(){
 		return resultat;
 	}
 	
