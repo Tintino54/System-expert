@@ -3,25 +3,20 @@ import java.util.ArrayList;
 public class Regle {
 	//attributs
 	private ArrayList<String> premisse;
-	private String resultat;
+	private ArrayList<String> resultat;
 
 	Regle(String proposition){	
 		premisse = new ArrayList<String>();
+		resultat = new ArrayList<String>();
 		//délimite la prémisse et le résultat sur la flèche
 		int delim = proposition.indexOf("-");
-		resultat = proposition.substring(delim+2, proposition.length());
-		String partieGauche = proposition.substring(0, delim);
-
 		//gestion premisse
-		delim = partieGauche.indexOf("^");
-		while(partieGauche.length() != 1){
-			delim = partieGauche.indexOf("^");
-			premisse.add(partieGauche.substring(0, delim));
-			partieGauche = partieGauche.substring(delim+1, partieGauche.length());
-		}
-		premisse.add(partieGauche);
-	}
+		String partieGauche = proposition.substring(0, delim);
+		String partieDroite = proposition.substring(delim+2, proposition.length());
 
+		cutOnDelimitors(" et ",partieGauche, premisse);
+		cutOnDelimitors(" et ",partieDroite, resultat);
+	}
 
 	public void display(){
 		for(int i = 0; i < premisse.size(); i++)
@@ -33,8 +28,15 @@ public class Regle {
 		return premisse;
 	}
 
-	public String getRes(){
+	public ArrayList<String> getRes(){
 		return resultat;
+	}
+	
+	public void cutOnDelimitors(String delimitor, String toCut, ArrayList<String> toAdd){
+		String[] split = toCut.split(delimitor);
+		for(int i = 0; i<split.length; i++){
+			toAdd.add(split[i]);
+		}
 	}
 
 }
