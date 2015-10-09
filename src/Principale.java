@@ -19,12 +19,24 @@ public class Principale {
 		regles.add(new Regle("A->B"));
 		regles.add(new Regle("A^B->D"));
 		regles.add(new Regle("C^F->A"));
+		regles.add(new Regle("U^F->T"));
+		regles.add(new Regle("T^S->R"));
 		regles.add(new Regle("D->F"));
+		regles.add(new Regle("S^F^T^R->Y"));
+		regles.add(new Regle("Z->S"));
 		regles.add(new Regle("D^A->Z"));
+		regles.add(new Regle("Z^F^T->U"));
+		regles.add(new Regle("Z->U"));
+		regles.add(new Regle("F^H->P"));
+		
+		
 
 
-		//objectif : {F}
+		//objectif : {F, Z, T, R}
 		objectif.add("F");
+		objectif.add("Z");
+		objectif.add("T");
+		objectif.add("R");
 
 		// On fait un chaînage avant, donc on cherche à aggrandir notre BF jusqu'à ce qu'il contienne
 		//la ou les solutions recherchées
@@ -35,7 +47,6 @@ public class Principale {
 		//arret permet d'arrêter la boucle dès qu'un probleme survient
 		boolean arret = false;		
 		while(BF.containsAll(objectif) == false && arret == false){
-			System.out.println(BF);
 			//pour chaque règle, on va regarder si on peut l'effectuer
 			//si on peut on va alors ajouter le résultat à l'ensemble des faits
 			for(int i = 0; i < regles.size(); i++){
@@ -44,9 +55,8 @@ public class Principale {
 				//si l'ensemble des faits contient bien l'ensemble des propositions de la premisse
 				if(BF.containsAll(regleCourante.getPrem())){
 					for(int j = 0; j<regleCourante.getPrem().size(); j++){
-						String propCourante = regleCourante.getPrem().get(j);
 						//si l'ensemble des faits contient déjà la proposition, alors on ne l'ajoute pas
-						System.out.println(regleCourante.getRes());
+						//System.out.println(regleCourante.getRes());
 						if(BF.contains(regleCourante.getRes()) == false){
 							BF.add(regleCourante.getRes());
 						}
@@ -56,11 +66,8 @@ public class Principale {
 					//regles.remove(i);
 				}
 			}
-			
+			System.out.println(BF);
 		}	
-		
-		System.out.println(BF);
-
 	}
 
 
