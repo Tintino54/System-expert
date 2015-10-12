@@ -1,4 +1,18 @@
-{a,b,c,d,e,f}
-a^b->c
-b^c->d
-a^c^d->e
+{erutpion volcanique,cyclone}
+beau temps->soleil
+anticyclone->beau temps et cumulus
+pluie et air froid->verglas et neige
+eruption volcanique->tremblement de terre
+nuage et air chaud->brouillard
+air chaud->stratus
+stratus et cyclone->orage
+air froid->cumulonimbus
+cumulonimbus->pluie
+stratus->pluie
+eruption volcanique->nuage
+cyclone->air froid
+soleil->air chaud
+cumulonimbus->nuage
+stratus->nuage
+cumulus->nuage
+orage->pluie et cumulonimbus

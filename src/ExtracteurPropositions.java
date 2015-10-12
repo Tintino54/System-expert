@@ -32,7 +32,7 @@ public class ExtracteurPropositions {
 			BufferedReader buffer=new BufferedReader(ipsr);
 			System.out.println("ok");
 			//On extrait les faits
-			if((line=buffer.readLine())!=null&&line.matches("\\{[A-Z,a-z]+(,[A-Z,a-z]+)*\\}")){
+			if((line=buffer.readLine())!=null&&line.matches("\\{[A-Z,a-z, ]+(,[A-Z,a-z, ]+)*\\}")){
 				String[] faits=line.split("[,{}]");
 				for(String fait : faits){
 					if(!fait.trim().isEmpty()){
@@ -48,7 +48,7 @@ public class ExtracteurPropositions {
 			//On extrait les propositions
 			while((line=buffer.readLine())!=null){
 				//on teste si la chaine est bien conforme à la syntaxe d'une proposition
-				if(line.matches("[A-Z,a-z, ]+(\\^[A-Z,a-z, ]+)*->[A-Z,a-z]+(\\^[A-Z,a-z, ]+)*")){
+				if(line.matches("[A-Z,a-z, ]+( et [A-Z,a-z, ]+)*->[A-Z,a-z, ]+( et [A-Z,a-z, ]+)*")){
 					Regle prop=new Regle(line);
 					props.add(prop);
 				}
