@@ -11,7 +11,7 @@ public class Principale {
 		//ce que nous recherchons
 		ArrayList<String> objectif = new ArrayList<String>();
 		
-		ExtracteurPropositions ep = new ExtracteurPropositions("/home/etudiant/Bureau/Graphes AI/System-expert/src/testSystem.txt");
+		ExtracteurPropositions ep = new ExtracteurPropositions("C:\\Users\\Alexandre\\Dropbox\\workspace\\System-expert\\src\\testChainage.txt");
 		ep.extraction();
 		regles = ep.getPropositions();
 		BF = ep.getBaseFaits();
@@ -20,12 +20,19 @@ public class Principale {
 
 
 		//objectif : {nuage, Z, T, R}
-		objectif.add("neige");
+		/*objectif.add("neige");
 		objectif.add("pluie");
+		System.out.println(BF);*/
+		for(Regle regle : regles){
+			System.out.println(regle.getPrem());
+		}
 
-		ChainageAvant chainageAvant = new ChainageAvant(regles, BF, objectif);
+		//ChainageAvant chainageAvant = new ChainageAvant(regles, BF, objectif);
+		ChainageArriere chainageArriere= new ChainageArriere(regles, BF, objectif);
 		
-		BF = chainageAvant.run();
+		chainageArriere.test("accepte");
+		
+		//BF = chainageAvant.run();
 		
 	}
 
