@@ -8,7 +8,10 @@ public class ChainageArriere extends Chainage{
 	}
 	
 	public ArrayList<String> run(){
-		
+		for(String elt :  objectif){
+			if(test(elt))
+				BF.add(elt);
+		}
 		
 		
 		return BF;
