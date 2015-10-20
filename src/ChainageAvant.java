@@ -63,45 +63,40 @@ public class ChainageAvant extends Chainage{
 		//dès qu'on le trouve on arrête de le chercher
 		//et donc on arrête de parcourir les faits, et on regarde pour les objectifs suivants
 		for(String o : objectif){
-			for(String f: BF){
-				System.out.println(parcoursProfondeur(f,o));
-				if (parcoursProfondeur(f, o)){
+				System.out.println(parcoursProfondeur(o));
+				if (parcoursProfondeur(o)){
 					foundObjectif.add(o);
 					break;
-				}
 			}
 		}
 		return foundObjectif;
 	} 
 
-	public boolean parcoursProfondeur(String faitCourant, String objectifCourant){
+	public boolean parcoursProfondeur(String objectifCourant){
 		//condition d'arrêt
-		if(objectif.contains(faitCourant)){
+		if(BF.contains(objectifCourant)){
 			//System.out.println("l'objectif courant : "+faitCourant+" a été trouvé");
 			return true;
 		}else{
+			int numRegle=0;
 			for (Iterator<Regle> iterator = regles.iterator(); iterator.hasNext();){
 				Regle regleCourante = iterator.next();
 				//si la règle à a gauche le fait courant et que les autres éléments sont dans la base de fait
 				//System.out.println(regleCourante.getPrem().contains(faitCourant) && BF.containsAll(regleCourante.getPrem()));
-				if(regleCourante.getPrem().contains(faitCourant)){
+				if(BF.containsAll(regleCourante.getPrem())&&!regleCourante.dejaUtilise()){
+					regleCourante.setUtilisation();	
+					//regleCourante est une copie de la règle,donc on utilise la classe set
+					regles.set(numRegle,regleCourante);
 					for(String resultatCourant : regleCourante.getRes()){
 						//dans le cas où la on trouve une condition d'arrêt
-						
+						BF.add(resultatCourant);
 
 						//mais oui c'est clair
-						//System.out.println(resultatCourant+" "+objectifCourant);
-						//return parcoursProfondeur(resultatCourant, objectifCourant);
-						if(resultatCourant.equals(objectif)){
+						if(parcoursProfondeur(objectifCourant))
 							return true;
-						}else{
-							return parcoursProfondeur(resultatCourant, objectifCourant);
-						}
 					}
-					/*if(verifie==true){
-						return true;
-					}*/
 				}
+				numRegle++;
 			}
 
 			//System.out.println("parcours");

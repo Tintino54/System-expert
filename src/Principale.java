@@ -11,19 +11,16 @@ public class Principale {
 		//ce que nous recherchons
 		ArrayList<String> objectif = new ArrayList<String>();
 		
-		ExtracteurPropositions ep = new ExtracteurPropositions("/home/etudiant/Bureau/Graphes AI/System-expert/src/testSystem.txt");
+		ExtracteurPropositions ep = new ExtracteurPropositions("/home/etudiant/Dropbox/workspace/System-expert/src/testSystem.txt");
 		ep.extraction();
 		regles = ep.getPropositions();
 		BF = ep.getBaseFaits();
 		
 
 
-
 		//objectif : {nuage, Z, T, R}
-		objectif.add("neige");
-		objectif.add("verglas");
-		objectif.add("soleil");
 		objectif.add("tagada");
+		objectif.add("soleil");
 		/*for(Regle regle : regles){
 			System.out.println(regle.getPrem());
 		}*/
