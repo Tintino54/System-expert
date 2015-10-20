@@ -11,7 +11,7 @@ public class Principale {
 		//ce que nous recherchons
 		ArrayList<String> objectif = new ArrayList<String>();
 		
-		ExtracteurPropositions ep = new ExtracteurPropositions("/home/etudiant/Dropbox/workspace/System-expert/src/testSystem.txt");
+		ExtracteurPropositions ep = new ExtracteurPropositions("/home/etudiant/Bureau/Graphes AI/System-expert/src/testSystem.txt");
 		ep.extraction();
 		regles = ep.getPropositions();
 		BF = ep.getBaseFaits();
@@ -20,20 +20,27 @@ public class Principale {
 
 
 		//objectif : {nuage, Z, T, R}
-		for(Regle regle : regles){
+		objectif.add("neige");
+		objectif.add("verglas");
+		objectif.add("soleil");
+		objectif.add("tagada");
+		/*for(Regle regle : regles){
 			System.out.println(regle.getPrem());
-		}
-		//ChainageAvant chainageAvant = new ChainageAvant(regles, BF, objectif);
-		ChainageArriere chainageArriere= new ChainageArriere(regles, BF, objectif);
+		}*/
+		ChainageAvant chainageAvant = new ChainageAvant(regles, BF, objectif);
+		/*ChainageArriere chainageArriere= new ChainageArriere(regles, BF, objectif);
 		BF=chainageArriere.run();
-		System.out.println(BF);
+		System.out.println(BF);*/
 		
 		/*if(chainageArriere.test("fraise tagada")==true){
 			System.out.println("verifie");
 		}*/
 		
-		//BF = chainageAvant.run();
 		
+		//BF = chainageAvant.run();
+		System.out.println(BF);
+		ArrayList<String> objectifsRunProfondeur = chainageAvant.runProfondeur();
+		System.out.println("objectifs trouvés : "+objectifsRunProfondeur);
 	}
 
 

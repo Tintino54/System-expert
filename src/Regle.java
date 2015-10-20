@@ -4,10 +4,13 @@ public class Regle {
 	//attributs
 	private ArrayList<String> premisse;
 	private ArrayList<String> resultat;
+	
+	private boolean checked;
 
 	Regle(String proposition){	
 		premisse = new ArrayList<String>();
 		resultat = new ArrayList<String>();
+		checked = false;
 		//délimite la prémisse et le résultat sur la flèche
 		int delim = proposition.indexOf("-");
 		//gestion premisse
