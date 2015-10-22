@@ -5,12 +5,12 @@ public class Regle {
 	private ArrayList<String> premisse;
 	private ArrayList<String> resultat;
 	
-	private boolean checked;
+	private boolean utilise;
 
 	Regle(String proposition){	
 		premisse = new ArrayList<String>();
 		resultat = new ArrayList<String>();
-		checked = false;
+		utilise = false;
 		//délimite la prémisse et le résultat sur la flèche
 		int delim = proposition.indexOf("-");
 		//gestion premisse
@@ -40,6 +40,14 @@ public class Regle {
 		for(int i = 0; i<split.length; i++){
 			toAdd.add(split[i]);
 		}
+	}
+	
+	public boolean dejaUtilise(){
+		return utilise;
+	}
+	
+	public void setUtilisation(){
+		utilise=true;
 	}
 
 }
