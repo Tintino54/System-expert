@@ -66,7 +66,7 @@ public class ChainageAvant extends Chainage{
 				System.out.println(parcoursProfondeur(o));
 				if (parcoursProfondeur(o)){
 					foundObjectif.add(o);
-					break;
+					//break;
 			}
 		}
 		return foundObjectif;

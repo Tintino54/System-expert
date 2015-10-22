@@ -19,8 +19,8 @@ public class Principale {
 
 
 		//objectif : {nuage, Z, T, R}
-		objectif.add("tagada");
-		objectif.add("soleil");
+		objectif.add("pluie");
+		objectif.add("nuage");
 		/*for(Regle regle : regles){
 			System.out.println(regle.getPrem());
 		}*/
