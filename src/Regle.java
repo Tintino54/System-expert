@@ -4,10 +4,12 @@ public class Regle {
 	//attributs
 	private ArrayList<String> premisse;
 	private ArrayList<String> resultat;
+	private String proposition;
 	
 	private boolean utilise;
 
 	Regle(String proposition){	
+		this.proposition = proposition;
 		premisse = new ArrayList<String>();
 		resultat = new ArrayList<String>();
 		utilise = false;
@@ -48,6 +50,10 @@ public class Regle {
 	
 	public void setUtilisation(){
 		utilise=true;
+	}
+	
+	public String toString(){
+		return proposition;
 	}
 
 }
