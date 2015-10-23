@@ -1,0 +1,9 @@
+{slave,responsabilite}
+responsabilite et langues et neerlandais->dynamique
+langues et anglais->adaptabilite
+slave et dynamique->adaptabilite
+responsabilite->leadership
+langues->neerlandais
+adaptabilite et leadership->accepte
+slave->langues
+leadership et slave->adaptabilite

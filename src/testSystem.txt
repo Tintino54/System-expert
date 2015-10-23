@@ -1,4 +1,4 @@
-{erutpion volcanique,cyclone}
+{eruption volcanique,cyclone}
 beau temps->soleil
 anticyclone->beau temps et cumulus
 pluie et air froid->verglas et neige

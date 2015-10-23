@@ -59,40 +59,50 @@ public class ChainageAvant extends Chainage{
 		
 		ArrayList<String> foundObjectif = new ArrayList<String>();
 		
+		/**
+		 * On déclare un ArrayList contenant les fait initiaux 
+		 * pour éviter  une "currentModificationException" lors de la lecture de la base de faits
+		*/
+		ArrayList<String> faitsInitiaux=new ArrayList<String>(BF);
+	//	int nbFaitsInitiaux=BF.size(),numFait=0;
+		
 		//on parcoure chaque objectif avec chaque fait,
 		//dès qu'on le trouve on arrête de le chercher
 		//et donc on arrête de parcourir les faits, et on regarde pour les objectifs suivants
 		for(String o : objectif){
-				System.out.println(parcoursProfondeur(o));
-				if (parcoursProfondeur(o)){
+			for(String faitInitial:faitsInitiaux){
+				if (parcoursProfondeur(o,faitInitial)){
 					foundObjectif.add(o);
-					//break;
+					break;
+				}
 			}
 		}
 		return foundObjectif;
 	} 
 
-	public boolean parcoursProfondeur(String objectifCourant){
+	public boolean parcoursProfondeur(String objectif,String dernierFaitDeduit){
 		//condition d'arrêt
-		if(BF.contains(objectifCourant)){
-			//System.out.println("l'objectif courant : "+faitCourant+" a été trouvé");
+		if(BF.contains(objectif)){
+			System.out.println("l'objectif courant : "+objectif+" a été trouvé");
 			return true;
 		}else{
 			int numRegle=0;
 			for (Iterator<Regle> iterator = regles.iterator(); iterator.hasNext();){
 				Regle regleCourante = iterator.next();
 				//si la règle à a gauche le fait courant et que les autres éléments sont dans la base de fait
+				ArrayList<String> premisses=regleCourante.getPrem();
 				//System.out.println(regleCourante.getPrem().contains(faitCourant) && BF.containsAll(regleCourante.getPrem()));
-				if(BF.containsAll(regleCourante.getPrem())&&!regleCourante.dejaUtilise()){
+				if(premisses.contains(dernierFaitDeduit)&&BF.containsAll(premisses)&&!regleCourante.dejaUtilise()){
+					System.out.println("appel de la règle: "+numRegle);
 					regleCourante.setUtilisation();	
 					//regleCourante est une copie de la règle,donc on utilise la classe set
 					regles.set(numRegle,regleCourante);
 					for(String resultatCourant : regleCourante.getRes()){
 						//dans le cas où la on trouve une condition d'arrêt
 						BF.add(resultatCourant);
-
+						System.out.println("rappel sur : "+resultatCourant);
 						//mais oui c'est clair
-						if(parcoursProfondeur(objectifCourant))
+						if(parcoursProfondeur(objectif,resultatCourant))
 							return true;
 					}
 				}
