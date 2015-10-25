@@ -28,7 +28,7 @@ public class ChainageMixte  extends Chainage{
 	
 	public boolean chainage_mixte(String objectif,String dernierFaitDeduit){
 		//condition d'arrêt
-		if(BF.contains(objectif)){
+		if(BF.contains(objectif)||dernierFaitDeduit.equals(objectif)){
 			System.out.println("l'objectif courant : "+objectif+" a été trouvé");
 			return true;
 		}else{
@@ -39,13 +39,14 @@ public class ChainageMixte  extends Chainage{
 				ArrayList<String> premisses=regleCourante.getPrem();
 				//System.out.println(regleCourante.getPrem().contains(faitCourant) && BF.containsAll(regleCourante.getPrem()));
 				if(premisses.contains(dernierFaitDeduit)&&BF.containsAll(premisses)&&!regleCourante.dejaUtilise()){
+					BF.add(dernierFaitDeduit);
 					System.out.println("appel de la règle: "+numRegle);
 					regleCourante.setUtilisation();	
 					//regleCourante est une copie de la règle,donc on utilise la classe set
 					regles.set(numRegle,regleCourante);
 					for(String resultatCourant : regleCourante.getRes()){
 						//dans le cas où la on trouve une condition d'arrêt
-						BF.add(resultatCourant);
+						//BF.add(resultatCourant);
 						System.out.println("rappel sur : "+resultatCourant);
 				
 						if(chainage_mixte(objectif,resultatCourant))

@@ -9,14 +9,13 @@ public class Principale {
 		
 		ArrayList<String> objectifs=new ArrayList<String>();
 		
-		objectifs.add("neige");
+	//	objectifs.add("tagada");
+		objectifs.add("nuage");
 		
 		ChainageMixte chainage=new ChainageMixte(extracteur.getPropositions(),
 												 extracteur.getBaseFaits(),
 												 	objectifs);
-		chainage.run();
-		
-		
+		System.out.println(chainage.run());
 		
 		
 	}
