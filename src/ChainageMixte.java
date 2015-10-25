@@ -55,7 +55,7 @@ public class ChainageMixte  extends Chainage{
 				}
 				numRegle++;
 			}
-			if(chainage_arriere(dernierFaitDeduit)){
+			if(chainage_arriere(objectif)){
 				return true;
 			}
 			
@@ -66,7 +66,7 @@ public class ChainageMixte  extends Chainage{
 
 	
 	public boolean chainage_arriere(String objectif){
-		System.out.println("objectif "+objectif);
+		System.out.println("chainage arrière objectif "+objectif);
 		//cas d'arrï¿½t objectif trouvï¿½
 		if(BF.contains(objectif)){
 			//System.out.println("l'objectif: "+objectif+" est dans la base de fait");

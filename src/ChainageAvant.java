@@ -82,8 +82,8 @@ public class ChainageAvant extends Chainage{
 
 	public boolean parcoursProfondeur(String objectif,String dernierFaitDeduit){
 		//condition d'arrÃªt
-		if(BF.contains(objectif)||dernierFaitDeduit.equals(objectif)){
-			System.out.println("l'objectif courant : "+objectif+" a Ã©tÃ© trouvÃ©");
+		if(BF.contains(objectif)){
+			System.out.println("l'objectif courant : "+objectif+" a été trouvé");
 			return true;
 		}else{
 			int numRegle=0;
@@ -93,14 +93,14 @@ public class ChainageAvant extends Chainage{
 				ArrayList<String> premisses=regleCourante.getPrem();
 				//System.out.println(regleCourante.getPrem().contains(faitCourant) && BF.containsAll(regleCourante.getPrem()));
 				if(premisses.contains(dernierFaitDeduit)&&BF.containsAll(premisses)&&!regleCourante.dejaUtilise()){
-					BF.add(dernierFaitDeduit);
-					System.out.println("utilisation de la rÃ¨gle: "+numRegle);
+				//	BF.add(dernierFaitDeduit);
+					System.out.println("utilisation de la règle: "+numRegle);
 					regleCourante.setUtilisation();	
 					//regleCourante est une copie de la rÃ¨gle,donc on utilise la classe set
 					regles.set(numRegle,regleCourante);
 					for(String resultatCourant : regleCourante.getRes()){
 						//dans le cas oÃ¹ la on trouve une condition d'arrÃªt
-						//BF.add(resultatCourant);
+						BF.add(resultatCourant);
 						System.out.println("rappel sur : "+resultatCourant);
 				
 						if(parcoursProfondeur(objectif,resultatCourant))
@@ -110,7 +110,7 @@ public class ChainageAvant extends Chainage{
 				numRegle++;
 			}
 
-			//System.out.println("parcours");
+			System.out.println(dernierFaitDeduit+" ne déclenche aucune règle");
 			return false;
 		}
 	}
