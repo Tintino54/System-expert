@@ -9,7 +9,7 @@ public class ChainageArriere extends Chainage{
 	
 	public ArrayList<String> run(){
 		for(String elt :  objectif){
-			if(test(elt))
+			if(chainageArriere(elt))
 				BF.add(elt);
 		}
 		
@@ -17,25 +17,32 @@ public class ChainageArriere extends Chainage{
 		return BF;
 	}
 	
-	public boolean test(String objectif){
-		System.out.println("objectif "+objectif);
-		//cas d'arrï¿½t objectif trouvï¿½
+	/**
+	 * Chainage arrière
+	 * @param objectif
+	 * @return boolean
+	 * On applique la première règle  qui a pour conséquence l'objectif en paramètre, ensuite
+	 * si chaque rappel de la fonction sur les premisses de cette règle aboutit à un élément
+	 * de la base de fait, l'objectif est prouvé sinon on applique la règle suivante. Et ainsi
+	 * de suite jusqu'au parours de toutes les règles applicables.
+	 */
+	public boolean chainageArriere(String objectif){
+		//cas d'arrêt objectif trouvé
 		if(BF.contains(objectif)){
 			System.out.println("l'objectif: "+objectif+" est dans la base de fait");
 			return true;
 		}
 		
-		//parcours de l'ensemble des rï¿½gles
+		//parcours de l'ensemble des règles
 		for(Iterator<Regle> iterator = regles.iterator(); iterator.hasNext();) {
-			System.out.println("boucle");
 			Regle regleCourante = iterator.next();
-			//si notre objectif est consï¿½quence d'une rï¿½gle d'infï¿½rence
+			//si notre objectif est consequence d'une règle d'infèrence
 			if(regleCourante.getRes().contains(objectif)){
-				System.out.println("resultat");
 				System.out.println(regleCourante.getPrem());
 				boolean verifie=true;
 				for(String premisse : regleCourante.getPrem()){
-					if(!test(premisse)){
+					System.out.println("nouvel objectif : "+premisse);
+					if(!chainageArriere(premisse)){
 						verifie=false;
 					}
 				}
