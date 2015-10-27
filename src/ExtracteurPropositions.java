@@ -32,7 +32,7 @@ public class ExtracteurPropositions {
 			BufferedReader buffer=new BufferedReader(ipsr);
 			System.out.println("ok");
 			//On extrait les faits
-			if((line=buffer.readLine())!=null&&line.matches("\\{[A-Z,a-z, ]+(,[A-Z,a-z, ]+)*\\}")){
+			if((line=buffer.readLine())!=null&&line.matches("\\{[A-Z,a-z, ]*(,[A-Z,a-z, ]+)*\\}")){
 				String[] faits=line.split("[,{}]");
 				for(String fait : faits){
 					if(!fait.trim().isEmpty()){
@@ -63,13 +63,6 @@ public class ExtracteurPropositions {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public static void main(String args[]){
-		ExtracteurPropositions ext=new ExtracteurPropositions("/home/etudiant/Dropbox/workspace/System-expert/src/testSystem.txt");
-		ext.extraction();
-		ext.affichageFaits();
-		ext.affichageRegles();
 	}
 	
 	public void affichageFaits(){
