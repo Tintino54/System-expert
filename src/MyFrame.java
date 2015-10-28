@@ -143,9 +143,6 @@ public class MyFrame extends JFrame implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		ArrayList<Regle> r = (ArrayList<Regle>) regles.clone();
-		ArrayList<String> b = (ArrayList<String>) BF.clone();
-		ArrayList<String> o = (ArrayList<String>) objectif.clone();
 		Object source = e.getSource();
 		if(source == browse){
 			int result = c.showOpenDialog(this);
@@ -169,12 +166,18 @@ public class MyFrame extends JFrame implements ActionListener{
 		else if(source == calculerChainageAvantLargeur){
 			getFait();
 			getObjectif();
+			ArrayList<Regle> r = (ArrayList<Regle>) regles.clone();
+			ArrayList<String> b = (ArrayList<String>) BF.clone();
+			ArrayList<String> o = (ArrayList<String>) objectif.clone();
 			(new ChainageAvant(r, b, o)).run();
 		}
 
 		else if(source == calculerChainageAvantProfondeur){
 			getFait();
 			getObjectif();
+			ArrayList<Regle> r = (ArrayList<Regle>) regles.clone();
+			ArrayList<String> b = (ArrayList<String>) BF.clone();
+			ArrayList<String> o = (ArrayList<String>) objectif.clone();
 			(new ChainageAvant(r, b, o)).runProfondeur();
 		}
 		
@@ -182,18 +185,27 @@ public class MyFrame extends JFrame implements ActionListener{
 		else if(source == calculerChainageArriere){
 			getFait();
 			getObjectif();
+			ArrayList<Regle> r = (ArrayList<Regle>) regles.clone();
+			ArrayList<String> b = (ArrayList<String>) BF.clone();
+			ArrayList<String> o = (ArrayList<String>) objectif.clone();
 			(new ChainageArriere(r, b, o)).run();
 		}
 		
 		else if(source == calculerChainageMixte){
 			getFait();
 			getObjectif();
+			ArrayList<Regle> r = (ArrayList<Regle>) regles.clone();
+			ArrayList<String> b = (ArrayList<String>) BF.clone();
+			ArrayList<String> o = (ArrayList<String>) objectif.clone();
 			(new ChainageMixte(r, b, o)).run();
 		}
 		
 		else if(source == calculerChainageArriere){
 			getFait();
 			getObjectif();
+			ArrayList<Regle> r = (ArrayList<Regle>) regles.clone();
+			ArrayList<String> b = (ArrayList<String>) BF.clone();
+			ArrayList<String> o = (ArrayList<String>) objectif.clone();
 			(new ChainageArriere(r, b, o)).run();
 		}
 	}
