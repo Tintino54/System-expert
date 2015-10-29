@@ -11,12 +11,14 @@ public class ChainageAvant extends Chainage{
 	/**
 	 * Chainage avant en largeur
 	 * @return ArrayList<String>
-	 * On applique l'ensemble des règles applicables, 
-	 * c'est à dire celles dont les premisses sont contenus dans la base de faits.
-	 * On s'arrête quand l'objectif a été trouvé ou lorsque la base de faits est saturée.
+	 * On applique l'ensemble des rï¿½gles applicables, 
+	 * c'est ï¿½ dire celles dont les premisses sont contenus dans la base de faits.
+	 * On s'arrï¿½te quand l'objectif a ï¿½tï¿½ trouvï¿½ ou lorsque la base de faits est saturï¿½e.
 	 */
 	@SuppressWarnings("unchecked")
 	public ArrayList<String> run(){
+		trace = "";
+		
 		boolean arret = false;
 		ArrayList<String> newBF = new ArrayList<String>();
 		while(BF.containsAll(objectif) == false && arret == false){
@@ -25,15 +27,20 @@ public class ChainageAvant extends Chainage{
 				Regle regleCourante = iterator.next();
 				//si l'ensemble des faits contient bien l'ensemble des propositions de la premisse
 				if(newBF.containsAll(regleCourante.getPrem())){
+					trace = trace + "rÃ¨gle courante : '" + regleCourante +"'\n";
 					for(int j = 0; j<regleCourante.getPrem().size(); j++){
-						//si l'ensemble des faits contient déjà  la proposition, alors on ne l'ajoute pas
+						trace = trace + "prÃ©misse courant : "+regleCourante.getPrem().get(j)+"\n";
+						//si l'ensemble des faits contient dï¿½jï¿½ la proposition, alors on ne l'ajoute pas
 						for(int k = 0; k<regleCourante.getRes().size(); k++){
+							trace = trace + "rÃ©sultat courant : "+regleCourante.getRes().get(k)+"\n";
 							if(newBF.contains(regleCourante.getRes().get(k)) == false){
+								trace = trace + "rajout Ã  la base de fait "+regleCourante.getRes().get(k)+"\n\n";
 								newBF.add(regleCourante.getRes().get(k));
 							}
 						}
 					}	
-					//On supprime la règle car nous n'auront plus besoin de l'utiliser
+					//On supprime la rï¿½gle car nous n'auront plus besoin de l'utiliser
+					trace = trace + "la rÃ¨gle : '"+iterator.next()+"' ,a Ã©tÃ© supprimÃ©e car utilisÃ©e\n\n";
 					iterator.remove();
 				}
 			}
@@ -46,6 +53,7 @@ public class ChainageAvant extends Chainage{
 			}
 			System.out.println(BF);
 		}	
+		System.out.println(trace);
 		return BF;
 	}
 
@@ -53,12 +61,12 @@ public class ChainageAvant extends Chainage{
 		
 		
 		
-		 //On déclare un ArrayList contenant les fait initiaux 
-		 //pour éviter  une "currentModificationException" lors de la lecture de la base de faits	
+		 //On dï¿½clare un ArrayList contenant les fait initiaux 
+		 //pour ï¿½viter  une "currentModificationException" lors de la lecture de la base de faits	
 		ArrayList<String> faitsInitiaux=new ArrayList<String>(BF);
 		for(String o : objectif){
 			//on appelle le parcours en profondeur sur chaque faits initiaux
-			//si un seul permet de déduire l'objectif on sort de la boucle
+			//si un seul permet de dï¿½duire l'objectif on sort de la boucle
 			for(String faitInitial:faitsInitiaux){
 				if (parcoursProfondeur(o,faitInitial)){
 					break;
@@ -72,14 +80,14 @@ public class ChainageAvant extends Chainage{
 	 * @param objectif
 	 * @param dernierFaitDeduit
 	 * @return boolean
-	 * On applique la première règle applicable contenant le fait en paramètre, puis
-	 * on rappelle la fonction sur chaque conséquence après l'avoir ajoutée à la base de faits. 
-	 * s'arrête quand la base de faits contient l'objectif que l'on cherche
+	 * On applique la premiï¿½re rï¿½gle applicable contenant le fait en paramï¿½tre, puis
+	 * on rappelle la fonction sur chaque consï¿½quence aprï¿½s l'avoir ajoutï¿½e ï¿½ la base de faits. 
+	 * s'arrï¿½te quand la base de faits contient l'objectif que l'on cherche
 	 */
 	public boolean parcoursProfondeur(String objectif,String dernierFaitDeduit){
-		//condition d'arrêt objectif trouvé
+		//condition d'arrï¿½t objectif trouvï¿½
 		if(BF.contains(objectif)){
-			System.out.println("l'objectif : "+objectif+" a été trouvé");
+			System.out.println("l'objectif : "+objectif+" a ï¿½tï¿½ trouvï¿½");
 			return true;
 		}else{
 			int numRegle=0;
@@ -87,12 +95,12 @@ public class ChainageAvant extends Chainage{
 				Regle regleCourante = iterator.next();
 				ArrayList<String> premisses=regleCourante.getPrem();
 				if(premisses.contains(dernierFaitDeduit)&&BF.containsAll(premisses)&&!regleCourante.dejaUtilise()){
-					System.out.println("utilisation de la règle: "+numRegle);
+					System.out.println("utilisation de la rï¿½gle: "+numRegle);
 					regleCourante.setUtilisation();	
 					/*regleCourante est une copie, on utilise set
 					 *pour modifier la variable d'origine dans l'ArrayList*/
 					regles.set(numRegle,regleCourante);
-					//cas récursif on rappelle la fonction sur chaque conclusion de la règle appliquée
+					//cas rï¿½cursif on rappelle la fonction sur chaque conclusion de la rï¿½gle appliquï¿½e
 					for(String resultatCourant : regleCourante.getRes()){
 						BF.add(resultatCourant);
 						System.out.println("rappel sur : "+resultatCourant);
@@ -104,7 +112,7 @@ public class ChainageAvant extends Chainage{
 				numRegle++;
 			}
 
-			System.out.println(dernierFaitDeduit+" ne déclenche aucune règle");
+			System.out.println(dernierFaitDeduit+" ne dï¿½clenche aucune rï¿½gle");
 			return false;
 		}
 	}
