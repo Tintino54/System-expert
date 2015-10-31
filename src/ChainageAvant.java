@@ -59,7 +59,7 @@ public class ChainageAvant extends Chainage{
 
 	public ArrayList<String> runProfondeur(){
 		
-		
+		trace=" ";
 		
 		 //On dï¿½clare un ArrayList contenant les fait initiaux 
 		 //pour ï¿½viter  une "currentModificationException" lors de la lecture de la base de faits	
@@ -87,7 +87,7 @@ public class ChainageAvant extends Chainage{
 	public boolean parcoursProfondeur(String objectif,String dernierFaitDeduit){
 		//condition d'arrï¿½t objectif trouvï¿½
 		if(BF.contains(objectif)){
-			System.out.println("l'objectif : "+objectif+" a ï¿½tï¿½ trouvï¿½");
+			trace=trace + "l'objectif "+objectif+" est dans la base de faits\n";
 			return true;
 		}else{
 			int numRegle=0;
@@ -95,7 +95,7 @@ public class ChainageAvant extends Chainage{
 				Regle regleCourante = iterator.next();
 				ArrayList<String> premisses=regleCourante.getPrem();
 				if(premisses.contains(dernierFaitDeduit)&&BF.containsAll(premisses)&&!regleCourante.dejaUtilise()){
-					System.out.println("utilisation de la rï¿½gle: "+numRegle);
+					trace=trace + "utilisation de la règle : "+regleCourante+"\n";
 					regleCourante.setUtilisation();	
 					/*regleCourante est une copie, on utilise set
 					 *pour modifier la variable d'origine dans l'ArrayList*/
@@ -103,7 +103,7 @@ public class ChainageAvant extends Chainage{
 					//cas rï¿½cursif on rappelle la fonction sur chaque conclusion de la rï¿½gle appliquï¿½e
 					for(String resultatCourant : regleCourante.getRes()){
 						BF.add(resultatCourant);
-						System.out.println("rappel sur : "+resultatCourant);
+						trace=trace + "rappel sur le fait: "+resultatCourant+"\n";
 				
 						if(parcoursProfondeur(objectif,resultatCourant))
 							return true;
@@ -111,8 +111,7 @@ public class ChainageAvant extends Chainage{
 				}
 				numRegle++;
 			}
-
-			System.out.println(dernierFaitDeduit+" ne dï¿½clenche aucune rï¿½gle");
+			trace=trace+"le fait "+dernierFaitDeduit+" ne déclenche pas de règle\n";
 			return false;
 		}
 	}

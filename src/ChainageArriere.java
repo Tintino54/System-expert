@@ -8,6 +8,7 @@ public class ChainageArriere extends Chainage{
 	}
 	
 	public ArrayList<String> run(){
+		trace="";
 		for(String elt :  objectif){
 			if(chainageArriere(elt))
 				BF.add(elt);
@@ -29,7 +30,7 @@ public class ChainageArriere extends Chainage{
 	public boolean chainageArriere(String objectif){
 		//cas d'arrêt objectif trouvé
 		if(BF.contains(objectif)){
-			System.out.println("l'objectif: "+objectif+" est dans la base de fait");
+			System.out.println(objectif+" est dans la base de fait");
 			return true;
 		}
 		
@@ -38,20 +39,21 @@ public class ChainageArriere extends Chainage{
 			Regle regleCourante = iterator.next();
 			//si notre objectif est consequence d'une règle d'infèrence
 			if(regleCourante.getRes().contains(objectif)){
-				System.out.println(regleCourante.getPrem());
+				System.out.println(" utlisation de la règle "+regleCourante);
 				boolean verifie=true;
 				for(String premisse : regleCourante.getPrem()){
-					System.out.println("nouvel objectif : "+premisse);
+					System.out.println(" nouvel objectif : "+premisse);
 					if(!chainageArriere(premisse)){
 						verifie=false;
 					}
 				}
-				if(verifie==true){
+				if(verifie == true){
+					System.out.println("l'objectif: "+objectif+ "est prouvé");
 					return true;
 				}
 			}
 		}
-		System.out.println("l'objectif: "+objectif+" n'est pas dans la base de fait");
+		System.out.println(objectif+" n'est pas dans la base de fait");
 		return false;
 	}
 

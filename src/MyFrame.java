@@ -1,12 +1,14 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 import javax.swing.*;
 
 
-public class MyFrame extends JFrame implements ActionListener{
+public  class MyFrame extends JFrame implements ActionListener{
 	
 	final JButton browse = new JButton("parcourir");
 	final JButton calculerChainageAvantLargeur = new JButton("Chainage avant largeur");
@@ -19,9 +21,23 @@ public class MyFrame extends JFrame implements ActionListener{
 	final JLabel affichageBR = new JLabel();
 	final JLabel labelFait = new JLabel("Choisir faits : ");
 	final JLabel labelObjectif = new JLabel("Choisir objectifs : ");
+	final JTextField selectionFait = new JTextField(30);
+	final JTextField selectionObjectif = new JTextField(30);
+	final JButton ajouterFait = new JButton("ajouter fait");
+	final JButton ajouterObjectif = new JButton("ajouter objectif");
+	final JLabel listeFaits = new JLabel("faits         : ");
+	final JLabel listeObjectifs = new JLabel("objectifs : ");
+	final JTextArea resultatExecution = new JTextArea(20,30);
+	final JCheckBox verbose = new JCheckBox("afficher déroulement");
 	
-	JRadioButton[] boutonFaits = new JRadioButton[17];
-	JRadioButton[] boutonObjectifs = new JRadioButton[17];
+	
+	//variables servant pour la redirection du flux de sortie
+	private PrintStream textAreaOutput=new PrintStream(new MyOutputStream(resultatExecution));
+	private PrintStream nullOutput=new NullPrintStream();
+
+		
+	JPanel panel;
+	GridBagConstraints contraintes;
 	
 	//rÃ¨gles dans lesquelles nous allons chercher l'objectif
 			private ArrayList<Regle> regles = new ArrayList<Regle>();
@@ -29,15 +45,20 @@ public class MyFrame extends JFrame implements ActionListener{
 			private ArrayList<String> BF = new ArrayList<String>();
 			//ce que nous recherchons
 			private ArrayList<String> objectif = new ArrayList<String>();
+			
+			
+	/**
+	 * MyFrame
+	 * @param nom
+	 * place les différents composants dans le panel principal
+	 */
 
 	public MyFrame(String nom){
 		super(nom);
 		
-		boutonFaits = initialisation(boutonFaits);	
-		boutonObjectifs = initialisation(boutonObjectifs);
 		
-		JPanel panel = new JPanel(new GridBagLayout());
-		GridBagConstraints contraintes= new GridBagConstraints();
+		panel = new JPanel(new GridBagLayout());
+		contraintes= new GridBagConstraints();
 		panel.setBackground(Color.WHITE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
@@ -53,184 +74,173 @@ public class MyFrame extends JFrame implements ActionListener{
 		contraintes.gridy = 0;
 		panel.add( browse,contraintes);
 		
-		contraintes.fill = GridBagConstraints.HORIZONTAL;
 		contraintes.gridx = 1;
 		contraintes.gridy = 0;
 		panel.add(fichierRegles,contraintes);
 		
-		contraintes.fill = GridBagConstraints.HORIZONTAL;
 		contraintes.gridx = 0;
 		contraintes.gridy = 1;
 		panel.add( affichageBR,contraintes);
 		
-		contraintes.fill = GridBagConstraints.HORIZONTAL;
 		contraintes.gridx = 0;
 		contraintes.gridy = 2;
 		panel.add(calculerChainageAvantLargeur,contraintes);
 		
-		contraintes.fill = GridBagConstraints.HORIZONTAL;
 		contraintes.gridx = 1;
 		contraintes.gridy = 2;
 		panel.add(calculerChainageAvantProfondeur,contraintes);
 		
-		contraintes.fill = GridBagConstraints.HORIZONTAL;
 		contraintes.gridx = 2;
 		contraintes.gridy = 2;
 		panel.add(calculerChainageArriere,contraintes);
 		
-		contraintes.fill = GridBagConstraints.HORIZONTAL;
 		contraintes.gridx = 3;
 		contraintes.gridy = 2;
 		panel.add(calculerChainageMixte,contraintes);
 		
-		JPanel buttonsFPanel = new JPanel(new GridLayout(0,2)); 
-		for(int i = 0; i<boutonFaits.length; i++){
-			buttonsFPanel.add(boutonFaits[i]);
-		}
-		JPanel buttonsOPanel = new JPanel(new GridLayout(0,2)); 
-		for(int i = 0; i<boutonObjectifs.length; i++){
-			buttonsOPanel.add(boutonObjectifs[i]);
-		}
-		
-		contraintes.fill = GridBagConstraints.HORIZONTAL;
 		contraintes.gridx = 0;
-		contraintes.gridy = 3;
-		panel.add(labelFait,contraintes);
+		contraintes.gridy = 6;	
+		panel.add(selectionFait, contraintes);
 		
-		contraintes.fill = GridBagConstraints.HORIZONTAL;
 		contraintes.gridx = 1;
-		contraintes.gridy = 3;
-		panel.add(buttonsFPanel, contraintes);
+		contraintes.gridy = 6;	
+		panel.add(ajouterFait, contraintes);
 		
-		contraintes.fill = GridBagConstraints.HORIZONTAL;
-		contraintes.gridx = 2;
-		contraintes.gridy = 3;
-		panel.add(labelObjectif,contraintes);
+		contraintes.gridx = 0;
+		contraintes.gridy = 7;	
+		panel.add(selectionObjectif, contraintes);
 		
-		contraintes.fill = GridBagConstraints.HORIZONTAL;
-		contraintes.gridx = 3;
-		contraintes.gridy = 3;
-		panel.add(buttonsOPanel, contraintes);
-
+		contraintes.gridx = 1;
+		contraintes.gridy = 7;	
+		panel.add(ajouterObjectif, contraintes);
+		
+		contraintes.gridx = 0;
+		contraintes.gridy = 8;
+		panel.add(listeFaits, contraintes);
+		
+		contraintes.gridx = 0;
+		contraintes.gridy = 9;
+		panel.add(listeObjectifs, contraintes);
+		
+		contraintes.gridx = 0;
+		contraintes.gridy = 10;
+		//panel.add(resultatExecution, contraintes);
+		panel.add(new JScrollPane(resultatExecution), contraintes);
+		
+		contraintes.gridx = 1;
+		contraintes.gridy = 10;
+		panel.add(verbose, contraintes);
+		
+		System.out.println("redirection de flux");
+		
 		Container con = getContentPane();
 		con.add(panel);
 		browse.addActionListener(this);
+		ajouterFait.addActionListener(this);
+		ajouterObjectif.addActionListener(this);
 		calculerChainageAvantProfondeur.addActionListener(this);
 		calculerChainageAvantLargeur.addActionListener(this);
 		calculerChainageArriere.addActionListener(this);
 		calculerChainageMixte.addActionListener(this);
 		
+		
 		pack();
 	}
 	
-	public void getFait(){
-		BF.clear();
-		for(int i = 0; i<boutonFaits.length; i++){
-			if(boutonFaits[i].isSelected()){
-				BF.add(boutonFaits[i].getText());
-			}
-		}
-	}
-	
-	public void getObjectif(){
-		objectif.clear();
-		for(int i = 0; i<boutonObjectifs.length; i++){
-			if(boutonObjectifs[i].isSelected()){
-				objectif.add(boutonObjectifs[i].getText());
-			}
-		}
-	}
-	
+
+	/**
+	 * actionPerformed
+	 * @param ActionEvent
+	 * redéfinie les actions à effectuer lors des événements déclenchés par l'utilisateur
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 		if(source == browse){
-			int result = c.showOpenDialog(this);
-			if (result == JFileChooser.APPROVE_OPTION) {
-				File selectedFile = c.getSelectedFile();
-				fichierRegles.setText("Fichier selectionnÃ©: " + selectedFile.getName());
-				
-				ExtracteurPropositions ep = new ExtracteurPropositions(selectedFile.getAbsolutePath());
-				ep.extraction();
-				regles = ep.getPropositions();
-				String baseDeRegles = "<html><b>RÃ¨gles</b> : <br>";
-				for(Regle regle : regles){
-					baseDeRegles+=regle+"<br>";
-				}
-				baseDeRegles += "</html>";
-				affichageBR.setText(baseDeRegles);
-				pack();
+			afficherRegles();
+		}
+		
+		else if(source == calculerChainageAvantLargeur || source == calculerChainageAvantProfondeur|| source == calculerChainageArriere || source == calculerChainageMixte){
+			lancerChainage(source);
+		}
+		
+		else if(source == ajouterFait ){
+			String faits=listeFaits.getText();
+			BF.add(selectionFait.getText());
+			faits=faits+" "+selectionFait.getText();
+			listeFaits.setText(faits);
+			selectionFait.setText("");
+		}
+		
+		else if(source == ajouterObjectif){
+			String objectifs=listeObjectifs.getText();
+			objectif.add(selectionObjectif.getText());
+			objectifs=objectifs+" "+selectionObjectif.getText();
+			listeObjectifs.setText(objectifs);
+			selectionObjectif.setText("");
+		}
+	}
+	
+	public void lancerChainage(Object source){
+		//redirection du flux de sortie
+		if(verbose.isSelected()){
+			System.setOut(textAreaOutput);		
+		}
+		else{
+			System.setOut(nullOutput);
+		}
+		ArrayList<Regle> r = (ArrayList<Regle>) regles.clone();
+		ArrayList<String> b = (ArrayList<String>) BF.clone();
+		ArrayList<String> o = (ArrayList<String>) objectif.clone();
+		if(source == calculerChainageAvantLargeur){
+			ChainageAvant chainageAvant=new ChainageAvant(r, b, o);
+			chainageAvant.run();
+			
+		}
+		
+		else if (source == calculerChainageAvantProfondeur){
+			ChainageAvant chainageAvant=new ChainageAvant(r, b, o);
+			chainageAvant.runProfondeur();
+		}
+		
+		else if(source == calculerChainageArriere ){
+			ChainageArriere chainageArriere=new ChainageArriere(r, b, o);
+			chainageArriere.run();
+		}
+		
+		else {
+			ChainageMixte chainageMixte=new ChainageMixte(r, b, o);
+			chainageMixte.run();	
+		}
+		System.setOut(textAreaOutput);
+		System.out.println(BF);
+		
+	}
+	
+	public void afficherRegles(){
+		int result = c.showOpenDialog(this);
+		if (result == JFileChooser.APPROVE_OPTION) {
+			File selectedFile = c.getSelectedFile();
+			fichierRegles.setText("Fichier selectionnÃ©: " + selectedFile.getName());
+			
+			ExtracteurPropositions ep = new ExtracteurPropositions(selectedFile.getAbsolutePath());
+			ep.extraction();
+			regles = ep.getPropositions();
+			String baseDeRegles = "<html><b>RÃ¨gles</b> : <br>";
+			for(Regle regle : regles){
+				baseDeRegles+=regle+"<br>";
 			}
+			baseDeRegles += "</html>";
+			affichageBR.setText(baseDeRegles);
+			pack();
+		}		
+	}
+	
+	public void afficherResultatExecution(String trace){
+		if(!resultatExecution.getText().isEmpty()){
+			resultatExecution.setText("");
 		}
-		
-		else if(source == calculerChainageAvantLargeur){
-			getFait();
-			getObjectif();
-			ArrayList<Regle> r = (ArrayList<Regle>) regles.clone();
-			ArrayList<String> b = (ArrayList<String>) BF.clone();
-			ArrayList<String> o = (ArrayList<String>) objectif.clone();
-			(new ChainageAvant(r, b, o)).run();
-		}
+		resultatExecution.setText(trace);
+	}
 
-		else if(source == calculerChainageAvantProfondeur){
-			getFait();
-			getObjectif();
-			ArrayList<Regle> r = (ArrayList<Regle>) regles.clone();
-			ArrayList<String> b = (ArrayList<String>) BF.clone();
-			ArrayList<String> o = (ArrayList<String>) objectif.clone();
-			(new ChainageAvant(r, b, o)).runProfondeur();
-		}
-		
-		
-		else if(source == calculerChainageArriere){
-			getFait();
-			getObjectif();
-			ArrayList<Regle> r = (ArrayList<Regle>) regles.clone();
-			ArrayList<String> b = (ArrayList<String>) BF.clone();
-			ArrayList<String> o = (ArrayList<String>) objectif.clone();
-			(new ChainageArriere(r, b, o)).run();
-		}
-		
-		else if(source == calculerChainageMixte){
-			getFait();
-			getObjectif();
-			ArrayList<Regle> r = (ArrayList<Regle>) regles.clone();
-			ArrayList<String> b = (ArrayList<String>) BF.clone();
-			ArrayList<String> o = (ArrayList<String>) objectif.clone();
-			(new ChainageMixte(r, b, o)).run();
-		}
-		
-		else if(source == calculerChainageArriere){
-			getFait();
-			getObjectif();
-			ArrayList<Regle> r = (ArrayList<Regle>) regles.clone();
-			ArrayList<String> b = (ArrayList<String>) BF.clone();
-			ArrayList<String> o = (ArrayList<String>) objectif.clone();
-			(new ChainageArriere(r, b, o)).run();
-		}
-	}
-	
-	
-	
-	
-	public static JRadioButton[] initialisation(JRadioButton[] jr){
-		jr[0] = new JRadioButton("pluie");
-		jr[1] = new JRadioButton("soleil");
-		jr[2] = new JRadioButton("beau temps");
-		jr[3] = new JRadioButton("eruption volcanique");
-		jr[4] = new JRadioButton("brouillard");
-		jr[5] = new JRadioButton("nuage");
-		jr[6] = new JRadioButton("cyclone");
-		jr[7] = new JRadioButton("anticyclone");
-		jr[8] = new JRadioButton("air chaud");
-		jr[9] = new JRadioButton("air froid");
-		jr[10] = new JRadioButton("stratus");
-		jr[11] = new JRadioButton("cumulus");
-		jr[12] = new JRadioButton("cumulonimbus");
-		jr[13] = new JRadioButton("neige");
-		jr[14] = new JRadioButton("verglas");
-		jr[15] = new JRadioButton("orage");
-		jr[16] = new JRadioButton("tremblement de terre");
-		return jr;
-	}
 }

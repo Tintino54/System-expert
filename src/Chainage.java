@@ -23,5 +23,9 @@ public abstract class Chainage {
 		return objectif;
 	}
 	
+	public String getTrace(){
+		return trace;
+	}
+	
 	
 }
