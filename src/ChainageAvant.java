@@ -40,18 +40,15 @@ public class ChainageAvant extends Chainage{
 						}
 					}	
 					//On supprime la rï¿½gle car nous n'auront plus besoin de l'utiliser
-					trace = trace + "la rÃ¨gle : '"+iterator.next()+"' ,a Ã©tÃ© supprimÃ©e car utilisÃ©e\n\n";
+					trace = trace + "la rÃ¨gle : '"+iterator.next()+"' ,a été supprimée car utilisée\n\n";
 					iterator.remove();
 				}
 			}
-			System.out.println(BF);
-			System.out.println(newBF);
 			if(BF.equals(newBF)){
 				arret = true;
 			}else{
 				BF = newBF;
 			}
-			System.out.println(BF);
 		}	
 		System.out.println(trace);
 		return BF;

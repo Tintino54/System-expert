@@ -25,6 +25,7 @@ public  class MyFrame extends JFrame implements ActionListener{
 	final JTextField selectionObjectif = new JTextField(30);
 	final JButton ajouterFait = new JButton("ajouter fait");
 	final JButton ajouterObjectif = new JButton("ajouter objectif");
+	final JButton removeFO = new JButton("reset");
 	final JLabel listeFaits = new JLabel("faits         : ");
 	final JLabel listeObjectifs = new JLabel("objectifs : ");
 	final JTextArea resultatExecution = new JTextArea(20,30);
@@ -116,19 +117,23 @@ public  class MyFrame extends JFrame implements ActionListener{
 		
 		contraintes.gridx = 0;
 		contraintes.gridy = 8;
-		panel.add(listeFaits, contraintes);
+		panel.add(removeFO, contraintes);
 		
 		contraintes.gridx = 0;
 		contraintes.gridy = 9;
-		panel.add(listeObjectifs, contraintes);
+		panel.add(listeFaits, contraintes);
 		
 		contraintes.gridx = 0;
 		contraintes.gridy = 10;
+		panel.add(listeObjectifs, contraintes);
+		
+		contraintes.gridx = 0;
+		contraintes.gridy = 11;
 		//panel.add(resultatExecution, contraintes);
 		panel.add(new JScrollPane(resultatExecution), contraintes);
 		
 		contraintes.gridx = 1;
-		contraintes.gridy = 10;
+		contraintes.gridy = 12;
 		panel.add(verbose, contraintes);
 		
 		System.out.println("redirection de flux");
@@ -136,12 +141,14 @@ public  class MyFrame extends JFrame implements ActionListener{
 		Container con = getContentPane();
 		con.add(panel);
 		browse.addActionListener(this);
+		removeFO.addActionListener(this);
 		ajouterFait.addActionListener(this);
 		ajouterObjectif.addActionListener(this);
 		calculerChainageAvantProfondeur.addActionListener(this);
 		calculerChainageAvantLargeur.addActionListener(this);
 		calculerChainageArriere.addActionListener(this);
 		calculerChainageMixte.addActionListener(this);
+		
 		
 		
 		pack();
@@ -161,6 +168,7 @@ public  class MyFrame extends JFrame implements ActionListener{
 		}
 		
 		else if(source == calculerChainageAvantLargeur || source == calculerChainageAvantProfondeur|| source == calculerChainageArriere || source == calculerChainageMixte){
+			resultatExecution.setText("");
 			lancerChainage(source);
 		}
 		
@@ -178,6 +186,13 @@ public  class MyFrame extends JFrame implements ActionListener{
 			objectifs=objectifs+" "+selectionObjectif.getText();
 			listeObjectifs.setText(objectifs);
 			selectionObjectif.setText("");
+		}
+		
+		else if(source == removeFO){
+			BF.clear();
+			objectif.clear();
+			listeFaits.setText("faits         : ");
+			listeObjectifs.setText("objectifs : ");
 		}
 	}
 	

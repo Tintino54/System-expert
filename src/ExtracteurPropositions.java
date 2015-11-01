@@ -46,7 +46,7 @@ public class ExtracteurPropositions {
 					
 				}
 				else{
-					throw new Exception("la proposition ├а la ligne "+Integer.toString(numLigne)+" est incorrecte");
+					throw new Exception("la proposition ра la ligne "+Integer.toString(numLigne)+" est incorrecte");
 				}
 				numLigne++;
 				//buffer.close();
