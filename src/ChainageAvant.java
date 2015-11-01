@@ -87,33 +87,32 @@ public class ChainageAvant extends Chainage{
 	public boolean parcoursProfondeur(String objectif,String dernierFaitDeduit){
 		//condition d'arrï¿½t objectif trouvï¿½
 		if(BF.contains(objectif)){
-			trace=trace + "l'objectif "+objectif+" est dans la base de faits\n";
+			System.out.println( "l'objectif "+objectif+" est dans la base de faits");
 			return true;
-		}else{
-			int numRegle=0;
-			for (Iterator<Regle> iterator = regles.iterator(); iterator.hasNext();){
-				Regle regleCourante = iterator.next();
-				ArrayList<String> premisses=regleCourante.getPrem();
-				if(premisses.contains(dernierFaitDeduit)&&BF.containsAll(premisses)&&!regleCourante.dejaUtilise()){
-					trace=trace + "utilisation de la règle : "+regleCourante+"\n";
-					regleCourante.setUtilisation();	
-					/*regleCourante est une copie, on utilise set
-					 *pour modifier la variable d'origine dans l'ArrayList*/
-					regles.set(numRegle,regleCourante);
-					//cas rï¿½cursif on rappelle la fonction sur chaque conclusion de la rï¿½gle appliquï¿½e
-					for(String resultatCourant : regleCourante.getRes()){
-						BF.add(resultatCourant);
-						trace=trace + "rappel sur le fait: "+resultatCourant+"\n";
-				
-						if(parcoursProfondeur(objectif,resultatCourant))
+		}
+		int numRegle=0;
+		for (Iterator<Regle> iterator = regles.iterator(); iterator.hasNext();){
+			Regle regleCourante = iterator.next();
+			ArrayList<String> premisses=regleCourante.getPrem();
+			if(premisses.contains(dernierFaitDeduit)&&BF.containsAll(premisses)&&!regleCourante.dejaUtilise()){
+				System.out.println( "utilisation de la règle : "+regleCourante);
+				regleCourante.setUtilisation();	
+				/*regleCourante est une copie, on utilise set
+				 *pour modifier la variable d'origine dans l'ArrayList*/
+				regles.set(numRegle,regleCourante);
+				//cas rï¿½cursif on rappelle la fonction sur chaque conclusion de la rï¿½gle appliquï¿½e
+				for(String resultatCourant : regleCourante.getRes()){
+					BF.add(resultatCourant);
+					trace=trace + "rappel sur le fait: "+resultatCourant+"\n";
+					if(parcoursProfondeur(objectif,resultatCourant)){
 							return true;
 					}
 				}
-				numRegle++;
 			}
-			trace=trace+"le fait "+dernierFaitDeduit+" ne déclenche pas de règle\n";
-			return false;
+			numRegle++;
 		}
+		System.out.println("le fait "+dernierFaitDeduit+" ne déclenche pas de règle");
+		return false;
 	}
 
 }

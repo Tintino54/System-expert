@@ -3,7 +3,6 @@ import java.util.Iterator;
 
 
 public class ChainageMixte  extends Chainage{
-
 	public ChainageMixte(ArrayList<Regle> r, ArrayList<String> b,ArrayList<String> o) {
 		super(r, b, o);
 	}
@@ -11,7 +10,6 @@ public class ChainageMixte  extends Chainage{
 	public ArrayList<String> run(){	
 		ArrayList<String> foundObjectif = new ArrayList<String>();
 		ArrayList<String> faitsInitiaux=new ArrayList<String>(BF);
-		
 		//on parcoure chaque objectif avec chaque fait,
 		//dÃ¨s qu'on le trouve on arrÃªte de le chercher
 		//et donc on arrÃªte de parcourir les faits, et on regarde pour les objectifs suivants
@@ -27,72 +25,77 @@ public class ChainageMixte  extends Chainage{
 	}
 	
 	public boolean chainage_mixte(String objectif,String dernierFaitDeduit){
-		//condition d'arrÃªt
-		if(BF.contains(objectif)||dernierFaitDeduit.equals(objectif)){
-			System.out.println("l'objectif courant : "+objectif+" a Ã©tÃ© trouvÃ©");
+		//condition d'arrï¿½t objectif trouvï¿½
+		if(BF.contains(objectif)){
+			System.out.println( "l'objectif "+objectif+" est dans la base de faits");
 			return true;
-		}else{
-			int numRegle=0;
-			for (Iterator<Regle> iterator = regles.iterator(); iterator.hasNext();){
-				Regle regleCourante = iterator.next();
-				//si la rÃ¨gle Ã  a gauche le fait courant et que les autres Ã©lÃ©ments sont dans la base de fait
-				ArrayList<String> premisses=regleCourante.getPrem();
-				//System.out.println(regleCourante.getPrem().contains(faitCourant) && BF.containsAll(regleCourante.getPrem()));
-				if(premisses.contains(dernierFaitDeduit)&&BF.containsAll(premisses)&&!regleCourante.dejaUtilise()){
-					BF.add(dernierFaitDeduit);
-					System.out.println("appel de la rÃ¨gle: "+numRegle);
-					regleCourante.setUtilisation();	
-					//regleCourante est une copie de la rÃ¨gle,donc on utilise la classe set
-					regles.set(numRegle,regleCourante);
-					for(String resultatCourant : regleCourante.getRes()){
-						//dans le cas oÃ¹ la on trouve une condition d'arrÃªt
-						//BF.add(resultatCourant);
-						System.out.println("rappel sur : "+resultatCourant);
-				
-						if(chainage_mixte(objectif,resultatCourant))
-							return true;
-					}
-				}
-				numRegle++;
-			}
-			if(chainage_arriere(objectif)){
-				return true;
-			}
-			
-			//System.out.println("parcours");
-			return false;
 		}
+		int numRegle=0;
+		for (Iterator<Regle> iterator = regles.iterator(); iterator.hasNext();){
+			Regle regleCourante = iterator.next();
+			ArrayList<String> premisses=regleCourante.getPrem();
+			if(premisses.contains(dernierFaitDeduit)&&BF.containsAll(premisses)&&!regleCourante.dejaUtilise()){
+				System.out.println("utilisation de la règle : "+regleCourante);
+				regleCourante.setUtilisation();	
+				/*regleCourante est une copie, on utilise set
+				 *pour modifier la variable d'origine dans l'ArrayList*/
+				regles.set(numRegle,regleCourante);
+				//cas rï¿½cursif on rappelle la fonction sur chaque conclusion de la rï¿½gle appliquï¿½e
+				for(String resultatCourant : regleCourante.getRes()){
+					BF.add(resultatCourant);
+					System.out.println("rappel sur le fait: "+resultatCourant);
+					if(chainage_mixte(objectif,resultatCourant))
+						return true;
+				}
+			}
+			else{
+				
+			}
+			numRegle++;
+		}
+		System.out.println("chaine arriere sur : "+dernierFaitDeduit);
+		BF.remove(dernierFaitDeduit);
+		chainageArriere(dernierFaitDeduit);
+		return false;
 	}
 
-	
-	public boolean chainage_arriere(String objectif){
-		System.out.println("chainage arrière objectif "+objectif);
-		//cas d'arrï¿½t objectif trouvï¿½
+	/**
+	 * Chainage arrière
+	 * @param objectif
+	 * @return boolean
+	 * On applique la première règle  qui a pour conséquence l'objectif en paramètre, ensuite
+	 * si chaque rappel de la fonction sur les premisses de cette règle aboutit à un élément
+	 * de la base de fait, l'objectif est prouvé sinon on applique la règle suivante. Et ainsi
+	 * de suite jusqu'au parours de toutes les règles applicables.
+	 */
+	public boolean chainageArriere(String objectif){
+		//cas d'arrêt objectif trouvé
 		if(BF.contains(objectif)){
-			//System.out.println("l'objectif: "+objectif+" est dans la base de fait");
+			System.out.println("objectif trouvé");
 			return true;
 		}
 		
-		//parcours de l'ensemble des rï¿½gles
-		for(Iterator<Regle> iterator = regles.iterator(); iterator.hasNext();) {
-			//System.out.println("boucle");
-			Regle regleCourante = iterator.next();
-			//si notre objectif est consï¿½quence d'une rï¿½gle d'infï¿½rence
+		//parcours de l'ensemble des règles
+		for(Regle regleCourante: regles) {
+			//Regle regleCourante = iterator.next();
+				//System.out.println("règle "+regleCourante+"n'est pas appliquée");
+			//si notre objectif est consequence d'une règle d'infèrence
 			if(regleCourante.getRes().contains(objectif)){
-				//System.out.println("resultat");
-				//System.out.println(regleCourante.getPrem());
+			//	System.out.println("utilisation de la règle : "+regleCourante);
 				boolean verifie=true;
 				for(String premisse : regleCourante.getPrem()){
-					if(!chainage_arriere(premisse)){
+					System.out.println("chainage arriere utilise règle : "+regleCourante);
+					if(!chainageArriere(premisse)){
 						verifie=false;
 					}
 				}
-				if(verifie==true){
+				if(verifie == true){
+					System.out.println("   le chainage arrière deduit : "+objectif);
+					BF.add(objectif);
 					return true;
 				}
 			}
 		}
-		System.out.println("l'objectif: "+objectif+" n'est pas dans la base de fait");
 		return false;
 	}
 

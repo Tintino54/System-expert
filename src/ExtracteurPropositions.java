@@ -8,19 +8,19 @@ import java.util.ArrayList;
 
 public class ExtracteurPropositions {
 	private String __path;
-	private ArrayList<Regle> props=new ArrayList<Regle>();
-	private ArrayList<String> baseFaits=new ArrayList<String>();
+	private ArrayList<Regle> regles=new ArrayList<Regle>();
+	private ArrayList<Regle> reglesIncoherence=new ArrayList<Regle>();
 	
 	public ExtracteurPropositions(String path){
 		__path=path;
 	}
 	
-	public ArrayList<Regle> getPropositions(){
-		return props;
+	public ArrayList<Regle> getRegles(){
+		return regles;
 	}
 	
-	public ArrayList<String> getBaseFaits(){
-		return baseFaits;
+	public ArrayList<Regle> getReglesIncoherence(){
+		return reglesIncoherence;
 	}
 	
 	public void extraction(){
@@ -30,34 +30,28 @@ public class ExtracteurPropositions {
 			InputStream ips=new FileInputStream(__path);
 			InputStreamReader ipsr=new InputStreamReader(ips);
 			BufferedReader buffer=new BufferedReader(ipsr);
-			System.out.println("ok");
-			//On extrait les faits
-			if((line=buffer.readLine())!=null&&line.matches("\\{[A-Z,a-z, ]*(,[A-Z,a-z, ]+)*\\}")){
-				String[] faits=line.split("[,{}]");
-				for(String fait : faits){
-					if(!fait.trim().isEmpty()){
-						baseFaits.add(fait);
-					}
-				}
-			}
 			
-			else{
-				throw new Exception("le chaine contenant les faits est mal formÃ©e");
-			}
 			int numLigne=1;
-			//On extrait les propositions
+			//On extrait les règles du fichier
 			while((line=buffer.readLine())!=null){
-				//on teste si la chaine est bien conforme Ã  la syntaxe d'une proposition
+				//on teste si la chaine est bien conforme à la syntaxe d'une règle
 				if(line.matches("[A-Z,a-z, ]+( et [A-Z,a-z, ]+)*->[A-Z,a-z, ]+( et [A-Z,a-z, ]+)*")){
-					Regle prop=new Regle(line);
-					props.add(prop);
+					Regle regle=new Regle(line);
+					regles.add(regle);
+				}
+				//cas règle définissant une incohérence
+				else if(line.matches("[A-Z,a-z, ]+( et [A-Z,a-z, ]+)*->INC")){
+					Regle inc=new Regle(line);
+					reglesIncoherence.add(inc);
+					
 				}
 				else{
 					throw new Exception("la proposition Ã  la ligne "+Integer.toString(numLigne)+" est incorrecte");
 				}
 				numLigne++;
-		//	buffer.close();
+				//buffer.close();
 			}
+			buffer.close();
 
 	
 		} catch (Exception e) {
@@ -66,14 +60,14 @@ public class ExtracteurPropositions {
 	}
 	
 	public void affichageFaits(){
-		for(String fait : baseFaits){
-			System.out.print(fait+" ");
+		for(Regle inc : reglesIncoherence){
+			inc.display();
 		}
 		System.out.println();
 	}
 	
 	public void affichageRegles(){
-		for(Regle regle :props){
+		for(Regle regle :regles){
 			regle.display();
 		}
 	}

@@ -225,7 +225,7 @@ public  class MyFrame extends JFrame implements ActionListener{
 			
 			ExtracteurPropositions ep = new ExtracteurPropositions(selectedFile.getAbsolutePath());
 			ep.extraction();
-			regles = ep.getPropositions();
+			regles = ep.getRegles();
 			String baseDeRegles = "<html><b>Règles</b> : <br>";
 			for(Regle regle : regles){
 				baseDeRegles+=regle+"<br>";
