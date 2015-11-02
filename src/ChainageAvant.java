@@ -4,8 +4,8 @@ import java.util.Iterator;
 public class ChainageAvant extends Chainage{
 
 	public ChainageAvant(ArrayList<Regle> r, ArrayList<String> b,
-			ArrayList<String> o) {
-		super(r, b, o);
+			ArrayList<String> o,ArrayList<Regle> inc) {
+		super(r, b, o, inc);
 	}
 
 	/**

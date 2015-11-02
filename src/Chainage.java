@@ -6,10 +6,11 @@ public abstract class Chainage {
 	protected ArrayList<Regle> reglesIncoherence;
 	protected String trace;
 	
-	public Chainage(ArrayList<Regle> r,ArrayList<String> b,ArrayList<String> o){
+	public Chainage(ArrayList<Regle> r,ArrayList<String> b,ArrayList<String> o,ArrayList<Regle> inc){
 		regles = r;
 		BF = b;
 		objectif = o;
+		reglesIncoherence=inc;
 	}
 	
 	public ArrayList<Regle> getRegles(){

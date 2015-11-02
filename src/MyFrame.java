@@ -30,7 +30,8 @@ public  class MyFrame extends JFrame implements ActionListener{
 	final JLabel listeObjectifs = new JLabel("objectifs : ");
 	final JTextArea resultatExecution = new JTextArea(20,30);
 	final JCheckBox verbose = new JCheckBox("afficher déroulement");
-	
+		
+	File selectedFile=null;
 	
 	//variables servant pour la redirection du flux de sortie
 	private PrintStream textAreaOutput=new PrintStream(new MyOutputStream(resultatExecution));
@@ -46,6 +47,8 @@ public  class MyFrame extends JFrame implements ActionListener{
 			private ArrayList<String> BF = new ArrayList<String>();
 			//ce que nous recherchons
 			private ArrayList<String> objectif = new ArrayList<String>();
+			//règles définissant l'incohérence
+			protected ArrayList<Regle> inc=new ArrayList<Regle>();
 			
 			
 	/**
@@ -209,35 +212,53 @@ public  class MyFrame extends JFrame implements ActionListener{
 		ArrayList<Regle> r = (ArrayList<Regle>) regles.clone();
 		ArrayList<String> b = (ArrayList<String>) BF.clone();
 		ArrayList<String> o = (ArrayList<String>) objectif.clone();
+		ArrayList<String> objectifsTrouves=new ArrayList<String>();
+		boolean coherence;
 		if(source == calculerChainageAvantLargeur){
-			ChainageAvant chainage=new ChainageAvant(r, b, o);
-			chainage.run();
+			ChainageAvant chainage=new ChainageAvant(r, b, o, inc);
+			objectifsTrouves=chainage.run();
+			coherence=chainage.verifierCoherence();
 			
 		}
 		
 		else if (source == calculerChainageAvantProfondeur){
-			ChainageAvant chainage=new ChainageAvant(r, b, o);
-			chainage.runProfondeur();
+			ChainageAvant chainage=new ChainageAvant(r, b, o, inc);
+			objectifsTrouves=chainage.runProfondeur();
+			coherence=chainage.verifierCoherence();
 		}
 		
 		else if(source == calculerChainageArriere ){
-			ChainageArriere chainage=new ChainageArriere(r, b, o);
-			chainage.run();
+			ChainageArriere chainage=new ChainageArriere(r, b, o, inc);
+			objectifsTrouves=chainage.run();
+			coherence=chainage.verifierCoherence();
 		}
 		
 		else {
-			ChainageMixte chainage=new ChainageMixte(r, b, o);
-			chainage.run();
+			ChainageMixte chainage=new ChainageMixte(r, b, o, inc);
+			objectifsTrouves=chainage.run();
+			coherence=chainage.verifierCoherence();
 		}
 		System.setOut(textAreaOutput);
-		System.out.println(BF);
+		if(coherence==false){
+			System.out.println("incohérence de la nouvelle base de fait");
+		}
+		else{
+			System.out.println(objectifsTrouves);
+		}
+		resetRegles();
 		
+	}
+	
+	public void resetRegles(){
+		ExtracteurPropositions ep = new ExtracteurPropositions(selectedFile.getAbsolutePath());
+		ep.extraction();
+		regles = ep.getRegles();
 	}
 	
 	public void afficherRegles(){
 		int result = c.showOpenDialog(this);
 		if (result == JFileChooser.APPROVE_OPTION) {
-			File selectedFile = c.getSelectedFile();
+			selectedFile = c.getSelectedFile();
 			fichierRegles.setText("Fichier selectionnÃ©: " + selectedFile.getName());
 			
 			ExtracteurPropositions ep = new ExtracteurPropositions(selectedFile.getAbsolutePath());

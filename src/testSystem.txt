@@ -15,3 +15,5 @@ cumulonimbus->nuage
 stratus->nuage
 cumulus->nuage
 orage->pluie et cumulonimbus
+beau temps et pluie->INC
+air chaud et air froid->INC
