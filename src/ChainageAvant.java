@@ -20,40 +20,36 @@ public class ChainageAvant extends Chainage{
 		trace = "";
 		ArrayList<String> objectifsTrouves = new ArrayList<String>();
 		boolean arret = false;
-		ArrayList<String> newBF = new ArrayList<String>();
+		//ArrayList<String> newBF = new ArrayList<String>();
 		while(BF.containsAll(objectif) == false && arret == false){
-			newBF = (ArrayList<String>) BF.clone();
+			
 			for (Iterator<Regle> iterator = regles.iterator(); iterator.hasNext();) {
 				Regle regleCourante = iterator.next();
 				//si l'ensemble des faits contient bien l'ensemble des propositions de la premisse
-				if(newBF.containsAll(regleCourante.getPrem())){
-					System.out.println("règle courante : "+regleCourante);
+				if(BF.containsAll(regleCourante.getPrem())){
+					System.out.println("règle courante : "+regleCourante+"\n");
 					for(int j = 0; j<regleCourante.getPrem().size(); j++){
 						System.out.println("premisse courant: "+regleCourante.getPrem().get(j));
-						//si l'ensemble des faits contient dï¿½jï¿½ la proposition, alors on ne l'ajoute pas
+						//si l'ensemble des faits contient deja la proposition, alors on ne l'ajoute pas
 						for(int k = 0; k<regleCourante.getRes().size(); k++){
-							System.out.print("résultat courant : "+regleCourante.getRes().get(k));
-							if(newBF.contains(regleCourante.getRes().get(k)) == false){
-								System.out.println("ajout à la base de fait "+regleCourante.getRes().get(k));
-								newBF.add(regleCourante.getRes().get(k));
+							System.out.print("résultat courant : "+regleCourante.getRes().get(k)+"\n");
+							if(BF.contains(regleCourante.getRes().get(k)) == false){
+								System.out.println("ajout à la base de fait "+regleCourante.getRes().get(k)+"\n");
+								BF.add(regleCourante.getRes().get(k));
 								if(objectif.contains(regleCourante.getRes().get(k))){
 									objectifsTrouves.add(regleCourante.getRes().get(k));
 								}
 							}
 						}
 					}	
-					//On supprime la rï¿½gle car nous n'auront plus besoin de l'utiliser
-					System.out.println("la règle '"+iterator.next()+"' ,a été supprimée car utilisée");
+					//On supprime la regle car nous n'auront plus besoin de l'utiliser
+					System.out.println("la règle '"+regleCourante+"' ,a été supprimée car utilisée\n");
 					iterator.remove();
 				}
 			}
-			if(BF.equals(newBF)){
-				arret = true;
-			}else{
-				BF = newBF;
-			}
 		}	
-		System.out.println(objectifsTrouves);
+		System.out.println("Base de faits : "+BF);
+		System.out.println("objectifs trouves : "+objectifsTrouves);
 		return objectifsTrouves;
 	}
 
