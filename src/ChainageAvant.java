@@ -18,7 +18,7 @@ public class ChainageAvant extends Chainage{
 	@SuppressWarnings("unchecked")
 	public ArrayList<String> run(){
 		trace = "";
-		
+		ArrayList<String> objectifsTrouves = new ArrayList<String>();
 		boolean arret = false;
 		ArrayList<String> newBF = new ArrayList<String>();
 		while(BF.containsAll(objectif) == false && arret == false){
@@ -36,6 +36,9 @@ public class ChainageAvant extends Chainage{
 							if(newBF.contains(regleCourante.getRes().get(k)) == false){
 								System.out.println("ajout à la base de fait "+regleCourante.getRes().get(k));
 								newBF.add(regleCourante.getRes().get(k));
+								if(objectif.contains(regleCourante.getRes().get(k))){
+									objectifsTrouves.add(regleCourante.getRes().get(k));
+								}
 							}
 						}
 					}	
@@ -50,8 +53,8 @@ public class ChainageAvant extends Chainage{
 				BF = newBF;
 			}
 		}	
-		//System.out.println(trace);
-		return BF;
+		System.out.println(objectifsTrouves);
+		return objectifsTrouves;
 	}
 
 	public ArrayList<String> runProfondeur(){		
