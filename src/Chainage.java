@@ -3,6 +3,7 @@ public abstract class Chainage {
 	protected ArrayList<Regle> regles;
 	protected ArrayList<String> BF;
 	protected ArrayList<String> objectif;
+	protected ArrayList<Regle> reglesIncoherence;
 	protected String trace;
 	
 	public Chainage(ArrayList<Regle> r,ArrayList<String> b,ArrayList<String> o){
@@ -23,8 +24,27 @@ public abstract class Chainage {
 		return objectif;
 	}
 	
+	public ArrayList<Regle> getReglesIncoherence(){
+		return reglesIncoherence;
+	}
+	
 	public String getTrace(){
 		return trace;
+	}
+	
+	/**
+	 * verifierCoherence
+	 * @return
+	 * verifie que la base de faits obtenue par saturation
+	 * est cohérente
+	 */
+	public boolean verifierCoherence(){
+		for(Regle regle : reglesIncoherence){
+			if(BF.containsAll(regle.getPrem())){
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	

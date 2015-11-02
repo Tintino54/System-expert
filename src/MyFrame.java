@@ -193,6 +193,8 @@ public  class MyFrame extends JFrame implements ActionListener{
 			objectif.clear();
 			listeFaits.setText("faits         : ");
 			listeObjectifs.setText("objectifs : ");
+			
+	
 		}
 	}
 	
@@ -208,24 +210,24 @@ public  class MyFrame extends JFrame implements ActionListener{
 		ArrayList<String> b = (ArrayList<String>) BF.clone();
 		ArrayList<String> o = (ArrayList<String>) objectif.clone();
 		if(source == calculerChainageAvantLargeur){
-			ChainageAvant chainageAvant=new ChainageAvant(r, b, o);
-			chainageAvant.run();
+			ChainageAvant chainage=new ChainageAvant(r, b, o);
+			chainage.run();
 			
 		}
 		
 		else if (source == calculerChainageAvantProfondeur){
-			ChainageAvant chainageAvant=new ChainageAvant(r, b, o);
-			chainageAvant.runProfondeur();
+			ChainageAvant chainage=new ChainageAvant(r, b, o);
+			chainage.runProfondeur();
 		}
 		
 		else if(source == calculerChainageArriere ){
-			ChainageArriere chainageArriere=new ChainageArriere(r, b, o);
-			chainageArriere.run();
+			ChainageArriere chainage=new ChainageArriere(r, b, o);
+			chainage.run();
 		}
 		
 		else {
-			ChainageMixte chainageMixte=new ChainageMixte(r, b, o);
-			chainageMixte.run();	
+			ChainageMixte chainage=new ChainageMixte(r, b, o);
+			chainage.run();
 		}
 		System.setOut(textAreaOutput);
 		System.out.println(BF);

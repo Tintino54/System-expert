@@ -8,14 +8,15 @@ public class ChainageArriere extends Chainage{
 	}
 	
 	public ArrayList<String> run(){
-		trace="";
+		ArrayList<String> objectifsTrouves=new ArrayList<String>();
 		for(String elt :  objectif){
 			if(chainageArriere(elt))
-				BF.add(elt);
+				//BF.add(elt);
+				objectifsTrouves.add(elt);
 		}
 		
 		
-		return BF;
+		return objectifsTrouves;
 	}
 	
 	/**
@@ -48,7 +49,8 @@ public class ChainageArriere extends Chainage{
 					}
 				}
 				if(verifie == true){
-					System.out.println("l'objectif: "+objectif+ "est prouvé");
+					BF.add(objectif);
+					System.out.println("l'objectif: "+objectif+ " est prouvé");
 					return true;
 				}
 			}

@@ -27,20 +27,20 @@ public class ChainageAvant extends Chainage{
 				Regle regleCourante = iterator.next();
 				//si l'ensemble des faits contient bien l'ensemble des propositions de la premisse
 				if(newBF.containsAll(regleCourante.getPrem())){
-					trace = trace + "rÃ¨gle courante : '" + regleCourante +"'\n";
+					System.out.println("règle courante : "+regleCourante);
 					for(int j = 0; j<regleCourante.getPrem().size(); j++){
-						trace = trace + "prÃ©misse courant : "+regleCourante.getPrem().get(j)+"\n";
+						System.out.println("premisse courant: "+regleCourante.getPrem().get(j));
 						//si l'ensemble des faits contient dï¿½jï¿½ la proposition, alors on ne l'ajoute pas
 						for(int k = 0; k<regleCourante.getRes().size(); k++){
-							trace = trace + "rÃ©sultat courant : "+regleCourante.getRes().get(k)+"\n";
+							System.out.print("résultat courant : "+regleCourante.getRes().get(k));
 							if(newBF.contains(regleCourante.getRes().get(k)) == false){
-								trace = trace + "rajout Ã  la base de fait "+regleCourante.getRes().get(k)+"\n\n";
+								System.out.println("ajout à la base de fait "+regleCourante.getRes().get(k));
 								newBF.add(regleCourante.getRes().get(k));
 							}
 						}
 					}	
 					//On supprime la rï¿½gle car nous n'auront plus besoin de l'utiliser
-					trace = trace + "la rÃ¨gle : '"+iterator.next()+"' ,a été supprimée car utilisée\n\n";
+					System.out.println("la règle '"+iterator.next()+"' ,a été supprimée car utilisée");
 					iterator.remove();
 				}
 			}
@@ -50,27 +50,26 @@ public class ChainageAvant extends Chainage{
 				BF = newBF;
 			}
 		}	
-		System.out.println(trace);
+		//System.out.println(trace);
 		return BF;
 	}
 
-	public ArrayList<String> runProfondeur(){
-		
-		trace=" ";
-		
+	public ArrayList<String> runProfondeur(){		
 		 //On dï¿½clare un ArrayList contenant les fait initiaux 
 		 //pour ï¿½viter  une "currentModificationException" lors de la lecture de la base de faits	
+		ArrayList<String> objectifsTrouves=new ArrayList<String>();
 		ArrayList<String> faitsInitiaux=new ArrayList<String>(BF);
 		for(String o : objectif){
 			//on appelle le parcours en profondeur sur chaque faits initiaux
 			//si un seul permet de dï¿½duire l'objectif on sort de la boucle
 			for(String faitInitial:faitsInitiaux){
 				if (parcoursProfondeur(o,faitInitial)){
+					objectifsTrouves.add(o);
 					break;
 				}
 			}
 		}
-		return BF;
+		return objectifsTrouves;
 	} 
 	/**
 	 * Chainage avant en profondeur

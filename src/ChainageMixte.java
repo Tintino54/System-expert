@@ -71,7 +71,7 @@ public class ChainageMixte  extends Chainage{
 	public boolean chainageArriere(String objectif){
 		//cas d'arrêt objectif trouvé
 		if(BF.contains(objectif)){
-			System.out.println("objectif trouvé");
+			System.out.println(objectif+" est dans BF");
 			return true;
 		}
 		
@@ -80,11 +80,11 @@ public class ChainageMixte  extends Chainage{
 			//Regle regleCourante = iterator.next();
 				//System.out.println("règle "+regleCourante+"n'est pas appliquée");
 			//si notre objectif est consequence d'une règle d'infèrence
-			if(regleCourante.getRes().contains(objectif)){
+			if(regleCourante.getRes().contains(objectif)&&!regleCourante.dejaUtilise()){
 			//	System.out.println("utilisation de la règle : "+regleCourante);
 				boolean verifie=true;
 				for(String premisse : regleCourante.getPrem()){
-					System.out.println("chainage arriere utilise règle : "+regleCourante);
+					//System.out.println("chainage arriere utilise règle : "+regleCourante);
 					if(!chainageArriere(premisse)){
 						verifie=false;
 					}
@@ -92,7 +92,7 @@ public class ChainageMixte  extends Chainage{
 				if(verifie == true){
 					System.out.println("   le chainage arrière deduit : "+objectif);
 					BF.add(objectif);
-					return true;
+					//return true;
 				}
 			}
 		}
