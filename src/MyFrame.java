@@ -28,7 +28,7 @@ public  class MyFrame extends JFrame implements ActionListener{
 	final JButton removeFO = new JButton("reset");
 	final JLabel listeFaits = new JLabel("faits         : ");
 	final JLabel listeObjectifs = new JLabel("objectifs : ");
-	final JTextArea resultatExecution = new JTextArea(20,30);
+	final JTextArea resultatExecution = new JTextArea(17,30);
 	final JCheckBox verbose = new JCheckBox("afficher déroulement");
 		
 	File selectedFile=null;
