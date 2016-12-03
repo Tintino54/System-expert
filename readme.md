@@ -1,5 +1,9 @@
-## Utilisation du programme System-expert
-# Executez le programme avec java Principale
+## Programme System-expert
+# Description
+Ce programme est capable à partir de faits, c'est à dire des événements que l'on considère vrais et de règles de déduire de nouveaux
+faits. C'est règles sont des formules logiques de types : "Si fait1 et fait2 alors fait3". Ce type de systèmes étaient utilisés dans les
+débuts de l'intelligence artificielle comme outils d'aide à la décision.
+# Guide d'utilisation
 * Cliquez sur le bouton "parcourir" pour sélectionner le fichier de règles
   + Le fichier de règle est src/testSystem.txt
 * Vous voyez maintenant les règles affichées
@@ -9,7 +13,7 @@
   + Ces faits constitueront la base de faits
 * Entrez un objectif, cliquer sur "ajouter objectif"
   + Répéter l'opération pour entrer plusieurs objectifs
-* Cochez la case afficher le déroulement pour voir les traces de l'éxecution du chaînage
+* Cochez la case afficher le déroulement pour voir les traces de l'exécution du chaînage
 * Cliquez maintenant sur le bouton du chainage de votre choix
   + Avant largeur
   + avant profondeur
