@@ -34,7 +34,6 @@ public class ChainageArriere extends Chainage{
 	public boolean chainageArriere(String objectif){
 		//cas d'arrêt objectif trouvé
 		if(BF.contains(objectif)){
-			System.out.println(objectif+" est dans la base de fait");
 			return true;
 		}
 		
